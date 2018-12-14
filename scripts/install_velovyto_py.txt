@@ -1,0 +1,97 @@
+conda install numpy scipy cython numba matplotlib scikit-learn h5py click
+
+pip install pysam
+
+# error
+    gcc: error: @loader_path: No such file or directory
+    gcc: error: unrecognized command line option ‘-rpath’
+    error: command 'gcc' failed with exit status 1
+    
+    ----------------------------------------
+Command "/Users/yanwengong/anaconda3/bin/python -u -c "import setuptools, tokenize;__file__='/private/var/folders/4d/dw4vzklx2817rs_qzrbs5rb00000gn/T/pip-install-h6l4stix/pysam/setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('\r\n', '\n');f.close();exec(compile(code, __file__, 'exec'))" install --record /private/var/folders/4d/dw4vzklx2817rs_qzrbs5rb00000gn/T/pip-record-bub4ptxw/install-record.txt --single-version-externally-managed --compile" failed with error code 1 in /private/var/folders/4d/dw4vzklx2817rs_qzrbs5rb00000gn/T/pip-install-h6l4stix/pysam/
+
+
+You are using pip version 10.0.1, however version 18.1 is available.
+You should consider upgrading via the 'pip install --upgrade pip' command.
+
+## after upgrade
+
+Failed building wheel for pysam
+
+
+## I am going to try skip pysam and install velocyto directly first to see whether it works
+
+get similar error
+  gcc: error: @loader_path: No such file or directory
+  gcc: error: unrecognized command line option ‘-rpath’
+  error: command 'gcc' failed with exit status 1
+  
+  ----------------------------------------
+  Failed building wheel for pysam
+  Running setup.py clean for pysam
+Successfully built velocyto loompy
+Failed to build pysam
+Installing collected packages: loompy, pysam, velocyto
+
+## try another version of pysam
+ pip install pysam==0.9.1
+
+similar error
+gcc: error: unrecognized command line option ‘-rpath’
+  error: command 'gcc' failed with exit status 1
+  
+  ----------------------------------------
+  Failed building wheel for pysam
+  Running setup.py clean for pysam
+Failed to build pysam
+
+## try install pysam with htslib
+
+export HTSLIB_LIBRARY_DIR=/usr/local/lib
+export HTSLIB_INCLUDE_DIR=/usr/local/include
+pip install pysam
+
+## go to install hstlib 
+
+http://www.htslib.org/download/
+
+## then add the htslib/lib folder to LD_LIBRARY_PATH as described on the following website
+https://github.com/pysam-developers/pysam/issues/262
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:htslib/lib 
+export HTSLIB_LIBRARY_DIR=htslib/lib
+export HTSLIB_INCLUDE_DIR=htslib/include
+pip install pysam
+
+## try the pysam downloaded by anaconda
+conda config --add channels r
+conda config --add channels bioconda
+conda install pysam
+
+## then I installed velocyto, run velocyto --help and got the error below
+RuntimeError: 
+Your current Python installation is affected by a critical bug in numpy and
+MKL, and is going to return wrong results in velocyto and potentially other
+scientific packages.
+
+Please try updating your `numpy` version.
+
+For more information, see
+https://github.com/velocyto-team/velocyto.py/issues/104
+and
+https://github.com/ContinuumIO/anaconda-issues/issues/10089
+
+
+## I updated my numpy through
+
+pip install -U 
+My numpy version changed from 1.14.3 to 1.15.2
+
+## rerun velocyto --help
+Got the following warning, but the program seems able to run 
+/Users/yanwengong/anaconda3/lib/python3.6/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+
+
+
+
